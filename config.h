@@ -12,7 +12,7 @@ static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "JetBrains Mono:size=10:antialias=true:autohint=true",
-                                        "SauceCodePro Nerd Font Mono:size:12:antialias=true"};
+                                        "SauceCodePro Nerd Font:pixelsize=8:antialias=true"};
 static const char dmenufont[]       = "JetBrains Mono:size=10";
 static const char col_gray1[]       = "#232121";
 static const char col_gray2[]       = "#44475a";
@@ -62,14 +62,24 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 #define STATUSBAR "dwmblocks"
-
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 
+#include <X11/XF86keysym.h>
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+	TAGKEYS(                        XK_1,                      0)
+	TAGKEYS(                        XK_2,                      1)
+	TAGKEYS(                        XK_3,                      2)
+	TAGKEYS(                        XK_4,                      3)
+	TAGKEYS(                        XK_5,                      4)
+	TAGKEYS(                        XK_6,                      5)
+	TAGKEYS(                        XK_7,                      6)
+	TAGKEYS(                        XK_8,                      7)
+	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
@@ -98,15 +108,33 @@ static Key keys[] = {
         { MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
 	{ MODKEY,                       XK_plus,  setgaps,        {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_plus,  setgaps,        {.i = 0  } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
+
+        { MODKEY,			XK_m,		spawn,		SHCMD("$TERMINAL -e ncmpcpp") },
+        { MODKEY,			XK_f,		spawn,		SHCMD("$TERMINAL -e lf-run") },
+        { MODKEY,			XK_h,		spawn,		SHCMD("$TERMINAL -e htop") },
+        { MODKEY,			XK_w,		spawn,		SHCMD("$TERMINAL -e adl") },
+        { MODKEY|ShiftMask,		XK_w,		spawn,		SHCMD("$TERMINAL -e adl -d") },
+        { MODKEY,			XK_t,		spawn,		SHCMD("$TERMINAL -e trackma-curses") },
+        { MODKEY,			XK_n,		spawn,		SHCMD("$TERMINAL -e newsboat") },
+        { MODKEY|ShiftMask,		XK_n,		spawn,		SHCMD("$TERMINAL -e nmtui") },
+        { MODKEY,			XK_b,		spawn,		SHCMD("$BROWSER") },
+        { MODKEY,			XK_v,		spawn,		SHCMD("$VISUAL") },
+        { MODKEY|ShiftMask,		XK_f,		spawn,		SHCMD("nautilus") },
+        { MODKEY|ControlMask,		XK_f,		spawn,		SHCMD("gparted") },
+        
+        { 0,				XK_Print,	spawn,		SHCMD("dmenuscreenshot") },
+        { MODKEY,			XK_l,	        spawn,		SHCMD("dmenufilehandler ~/Lightnovels") },
+        { MODKEY,			XK_F12,	        spawn,		SHCMD("dmenuryzenadj") },
+        { MODKEY|ShiftMask,		XK_e,	        spawn,		SHCMD("dmenupowermenu") },
+
+	{ 0, XF86XK_AudioMute,		spawn,		SHCMD("pamixer -t; kill -42 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer -i 5; kill -42 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer -d 5; kill -42 $(pidof dwmblocks)") },
+        { 0, XF86XK_AudioPrev,		spawn,		SHCMD("mpc prev") },
+	{ 0, XF86XK_AudioNext,		spawn,		SHCMD("mpc next") },
+        { 0, XF86XK_AudioPlay,		spawn,		SHCMD("mpc toggle") },
+	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("light -A 5; kill -41 $(pidof dwmblocks)") },
+	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("light -U 5; kill -41 $(pidof dwmblocks)") },
 };
 
 /* button definitions */

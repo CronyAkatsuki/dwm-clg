@@ -51,3 +51,7 @@ super + {l,F12}
 # dmenu screenshot menu
 Print
     dmenuscreenshot
+
+# power menu
+super + shift + e
+    dmenupowermenu

@@ -109,7 +109,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_plus,  setgaps,        {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_plus,  setgaps,        {.i = 0  } },
 
-        { MODKEY,			XK_m,		spawn,		SHCMD("$TERMINAL -e ncmpcpp") },
+        /* { MODKEY,			XK_m,		spawn,		SHCMD("$TERMINAL -e ncmpcpp") }, */
         { MODKEY,			XK_f,		spawn,		SHCMD("$TERMINAL -e lf-run") },
         { MODKEY,			XK_h,		spawn,		SHCMD("$TERMINAL -e htop") },
         { MODKEY,			XK_w,		spawn,		SHCMD("$TERMINAL -e adl") },
